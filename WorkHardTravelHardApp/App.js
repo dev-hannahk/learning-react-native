@@ -4,42 +4,62 @@ import {
   Text,
   View,
   TouchableOpacity,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  Pressable,
+  TextInput,
 } from "react-native";
 import { theme } from "./colors";
+import { useState } from "react";
 
 export default function App() {
+  const [working, setWorking] = useState(true);
+  const [text, setText] = useState("");
+  const [toDos, setToDos] = useState({});
+
+  const travel = () => setWorking(false);
+  const work = () => setWorking(true);
+
+  const onChangeText = (payload) => setText(payload);
+
+  const addToDo = () => {
+    if (text === "") {
+      return;
+    }
+    const newToDos = Object.assign({}, toDos, {
+      [Date.now()]: { text, work: working },
+    });
+    setToDos(newToDos);
+    setText("");
+  };
+
+  console.log({ toDos });
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
       <View style={styles.header}>
-        {/* <TouchableOpacity activeOpacity={0.5}>
-          <Text style={styles.btnText}>Work</Text>
+        <TouchableOpacity onPress={work}>
+          <Text
+            style={{ ...styles.btnText, color: working ? "white" : theme.gray }}
+          >
+            Work
+          </Text>
         </TouchableOpacity>
-        <TouchableHighlight
-          underlayColor="red"
-          activeOpacity={0.5}
-          onPress={() => console.log("pressed")}
-        >
-          <Text style={styles.btnText}>Travel</Text>
-        </TouchableHighlight> */}
-        {/* <TouchableWithoutFeedback>
-          <Text style={styles.btnText}>Work</Text>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => console.log("pressed?")}>
-          <Text style={styles.btnText}>Travel</Text>
-        </TouchableWithoutFeedback> */}
-        <Pressable
-          hitSlop={{ bottom: 20, left: 20, right: 20, top: 20 }}
-          onPress={() => console.log("pressed!")}
-        >
-          <Text style={styles.btnText}>Work</Text>
-        </Pressable>
-        <Pressable onPress={() => console.log("pressed!")}>
-          <Text style={styles.btnText}>Travel</Text>
-        </Pressable>
+        <TouchableOpacity onPress={travel}>
+          <Text
+            style={{ ...styles.btnText, color: working ? theme.gray : "white" }}
+          >
+            Travel
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View>
+        <TextInput
+          returnKeyType="done"
+          onSubmitEditing={addToDo}
+          value={text}
+          onChangeText={onChangeText}
+          style={styles.input}
+          placeholder={working ? "Add a To Do" : "Where do you wanna go?"}
+        />
       </View>
     </View>
   );
@@ -60,5 +80,13 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "600",
     fontSize: 38,
+  },
+  input: {
+    backgroundColor: "white",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 30,
+    marginTop: 20,
+    fontSize: 16,
   },
 });

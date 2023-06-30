@@ -10,20 +10,49 @@ import {
 } from "react-native";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Fontisto } from "@expo/vector-icons";
+import { Fontisto, Entypo } from "@expo/vector-icons";
 import { theme } from "./colors";
 
 const STORAGE_KEY = "@toDos";
+const TAB = "@tab";
 
 export default function App() {
   const [working, setWorking] = useState(true);
   const [text, setText] = useState("");
   const [toDos, setToDos] = useState({});
 
-  const travel = () => setWorking(false);
-  const work = () => setWorking(true);
+  useEffect(() => {
+    loadToDos();
+    loadTab();
+  }, []);
 
-  const onChangeText = (payload) => setText(payload);
+  const travel = () => {
+    setWorking(false);
+    saveTab(false);
+  };
+
+  const work = () => {
+    setWorking(true);
+    saveTab(true);
+  };
+
+  const onChangeText = (payload) => {
+    setText(payload);
+  };
+
+  const saveTab = async (item) => {
+    try {
+      const tab = JSON.stringify(item);
+      await AsyncStorage.setItem(TAB, tab);
+    } catch (error) {
+      alert("Error on Saving Tab");
+    }
+  };
+
+  const loadTab = async (tab) => {
+    const s = await AsyncStorage.getItem(TAB);
+    setWorking(JSON.parse(s));
+  };
 
   const saveToDos = async (toSave) => {
     try {
@@ -39,23 +68,28 @@ export default function App() {
     setToDos(JSON.parse(s));
   };
 
-  useEffect(() => {
-    loadToDos();
-  }, []);
-
   const addToDo = async () => {
     if (text === "") {
       return;
     }
-    const newToDos = { ...toDos, [Date.now()]: { text, working } };
+    const newToDos = {
+      ...toDos,
+      [Date.now()]: { text, working, done: false, edit: false },
+    };
     setToDos(newToDos);
     await saveToDos(newToDos);
     setTimeout(() => setText(""), 50);
   };
 
+  const doneToDo = async (key) => {
+    if (toDos[key].edit === true) toDos[key].edit = false;
+    toDos[key].done = !toDos[key].done;
+    updateToDo();
+  };
+
   const deleteToDo = (key) => {
     Alert.alert("Delete To Do", "Are you sure?", [
-      { text: "cancel" },
+      { text: "Cancel" },
       {
         text: "I'm sure",
         style: "destructive",
@@ -69,20 +103,42 @@ export default function App() {
     ]);
   };
 
+  const editToDo = async (key) => {
+    toDos[key].edit = !toDos[key].edit;
+    updateToDo();
+  };
+
+  const editing = (payload, key) => {
+    toDos[key].text = payload;
+    updateToDo();
+  };
+
+  const updateToDo = async () => {
+    const newToDos = { ...toDos };
+    setToDos(newToDos);
+    await saveToDos(newToDos);
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
       <View style={styles.header}>
         <TouchableOpacity onPress={work}>
           <Text
-            style={{ ...styles.btnText, color: working ? "white" : theme.grey }}
+            style={{
+              ...styles.btnText,
+              color: working ? "white" : theme.grey,
+            }}
           >
             Work
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={travel}>
           <Text
-            style={{ ...styles.btnText, color: working ? theme.grey : "white" }}
+            style={{
+              ...styles.btnText,
+              color: working ? theme.grey : "white",
+            }}
           >
             Travel
           </Text>
@@ -102,12 +158,67 @@ export default function App() {
         {Object.keys(toDos).map((key) =>
           toDos[key].working === working ? (
             <View style={styles.toDo} key={key}>
-              <Text style={styles.toDoText}>{toDos[key].text}</Text>
-              <TouchableOpacity onPress={() => deleteToDo(key)}>
-                <Text>
-                  <Fontisto name="trash" size={24} color="grey" />
-                </Text>
-              </TouchableOpacity>
+              <View style={styles.toDoItem}>
+                <TouchableOpacity onPress={() => doneToDo(key)}>
+                  <Text style={styles.toDoCheck}>
+                    {toDos[key].done ? (
+                      <Fontisto
+                        name="checkbox-active"
+                        size={24}
+                        color="beige"
+                      />
+                    ) : (
+                      <Fontisto
+                        name="checkbox-passive"
+                        size={24}
+                        color="beige"
+                      />
+                    )}
+                  </Text>
+                </TouchableOpacity>
+                <View>
+                  {toDos[key].edit ? (
+                    <TextInput
+                      autoFocus={true}
+                      style={styles.editInput}
+                      value={toDos[key].text}
+                      onChangeText={(payload) => editing(payload, key)}
+                    />
+                  ) : (
+                    <Text
+                      style={{
+                        ...styles.toDoText,
+                        textDecorationLine: toDos[key].done
+                          ? "line-through"
+                          : null,
+                      }}
+                    >
+                      {toDos[key].text}
+                    </Text>
+                  )}
+                </View>
+              </View>
+              <View style={styles.buttons}>
+                {toDos[key].done ? null : toDos[key].edit ? (
+                  <TouchableOpacity onPress={() => editToDo(key)}>
+                    <Text style={{ marginRight: 10 }}>
+                      <Fontisto name="save" size={24} color="darksalmon" />
+                    </Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => editToDo(key)}>
+                    <Text style={{ marginRight: 10 }}>
+                      <Entypo name="edit" size={24} color="darksalmon" />
+                    </Text>
+                  </TouchableOpacity>
+                )}
+
+                <TouchableOpacity onPress={() => deleteToDo(key)}>
+                  <Text>
+                    <Fontisto name="trash" size={24} color="grey" />
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           ) : null
         )}
@@ -155,5 +266,25 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     fontWeight: 500,
+  },
+  toDoItem: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  toDoCheck: {
+    marginRight: 10,
+  },
+  editInput: {
+    color: "black",
+    fontSize: 16,
+    opacity: 0.5,
+    backgroundColor: "white",
+    width: 200,
+    height: 24,
+  },
+  buttons: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

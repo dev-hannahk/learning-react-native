@@ -5,14 +5,21 @@
  * @format
  */
 
-import React from 'react';
-import {SafeAreaView, Text, View} from 'react-native';
-import Greeting from './components/Greeting';
+import React, {useState} from 'react';
+import {Button, SafeAreaView} from 'react-native';
+import Box from './components/Greeting';
 
 function App(): JSX.Element {
+  const [visible, setVisible] = useState(true);
+
+  const onPress = () => {
+    setVisible(!visible);
+  };
+
   return (
     <SafeAreaView>
-      <Greeting />
+      <Button title="토글" onPress={onPress} />
+      {visible ? <Box rounded size="large" color="blue" /> : null}
     </SafeAreaView>
   );
 }

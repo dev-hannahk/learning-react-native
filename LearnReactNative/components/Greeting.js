@@ -1,16 +1,51 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 
-Greeting.defaultProps = {
-  name: '리액트 네이티브',
+Box.defaultProps = {
+  size: 'medium',
+  color: 'black',
 };
 
-function Greeting(props) {
+function Box(props) {
   return (
-    <View>
-      <Text>안녕하세요, {props.name}!</Text>
-    </View>
+    <View
+      style={[
+        styles.box,
+        props.rounded && styles.rounded,
+        sizes[props.size],
+        {backgroundColor: props.color},
+      ]}
+    />
   );
 }
 
-export default Greeting;
+const styles = StyleSheet.create({
+  box: {
+    width: 64,
+    height: 64,
+    backgroundColor: 'black',
+  },
+  rounded: {
+    borderRadius: 16,
+  },
+  small: {
+    width: 32,
+    height: 32,
+  },
+  medium: {
+    width: 64,
+    height: 64,
+  },
+  large: {
+    width: 128,
+    height: 128,
+  },
+});
+
+const sizes = {
+  small: styles.small,
+  medium: styles.medium,
+  large: styles.large,
+};
+
+export default Box;

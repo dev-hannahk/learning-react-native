@@ -1,28 +1,14 @@
-import React, {useEffect} from 'react';
-import {View, Button} from 'react-native';
+import React from 'react';
+import {View, Button, Text} from 'react-native';
 
 function HomeScreen({navigation}) {
-  // useEffect(() => {
-  //   navigation.setOptions({title: '홈'});
-  // }, [navigation]);
-
   return (
     <View>
+      <Text>Home</Text>
+      <Button title="Drawer 열기" onPress={() => navigation.openDrawer()} />
       <Button
-        title="Detail 1 열기"
-        onPress={() => navigation.navigate('Detail', {id: 1})}
-      />
-      <Button
-        title="Detail 2 열기"
-        onPress={() => navigation.navigate('Detail', {id: 2})}
-      />
-      <Button
-        title="Detail 3 열기"
-        onPress={() => navigation.navigate('Detail', {id: 3})}
-      />
-      <Button
-        title="Headerless 열기"
-        onPress={() => navigation.navigate('Headerless')}
+        title="Setting 열기"
+        onPress={() => navigation.navigate('Settin')}
       />
     </View>
   );

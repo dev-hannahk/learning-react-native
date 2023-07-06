@@ -7,64 +7,46 @@
 
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import HomeScreen from './screens/HomeScreen';
-import DetailScreen from './screens/DetailScreen';
-import {View, Text, TouchableOpacity} from 'react-native';
-import HeaderlessScreen from './screens/HeaderlessScreen';
+import SettingScreen from './screens/SettingScreen';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Button, Text} from 'react-native';
 
-const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 function App(): JSX.Element {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen
+      <Drawer.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          headerShown: false,
+          drawerPosition: 'left',
+          drawerActiveBackgroundColor: '#fb8c00',
+          drawerActiveTintColor: 'white',
+        }}
+        backBehavior="history"
+        drawerContent={({navigation}) => (
+          <SafeAreaView>
+            <Text>A Custom Drawer</Text>
+            <Button
+              onPress={() => navigation.closeDrawer()}
+              title="Drawer 닫기"
+            />
+          </SafeAreaView>
+        )}>
+        <Drawer.Screen
           name="Home"
           component={HomeScreen}
-          options={{
-            title: '홈',
-            headerStyle: {
-              backgroundColor: '#29b6f6',
-            },
-            headerTintColor: '#ffffff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              fontSize: 20,
-            },
-          }}
+          options={{title: '홈', headerLeft: () => <Text>Left</Text>}}
         />
-        <Stack.Screen
-          name="Detail"
-          component={DetailScreen}
-          options={({route}: any) => ({
-            title: `상세 정보 - ${route.params.id}`,
-            headerBackVisible: false,
-            headerLeft: ({onPress}: any) => (
-              <TouchableOpacity onPress={onPress}>
-                <Text>Left</Text>
-              </TouchableOpacity>
-            ),
-            headerTitle: ({children}) => (
-              <View>
-                <Text>{children}</Text>
-              </View>
-            ),
-            headerRight: () => (
-              <TouchableOpacity>
-                <Text>Right</Text>
-              </TouchableOpacity>
-            ),
-          })}
+        <Drawer.Screen
+          name="Setting"
+          component={SettingScreen}
+          options={{title: '설정'}}
         />
-        <Stack.Screen
-          name="Headerless"
-          component={HeaderlessScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack.Navigator>
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }

@@ -7,46 +7,23 @@
 
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import HomeScreen from './screens/HomeScreen';
-import SettingScreen from './screens/SettingScreen';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Button, Text} from 'react-native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import MainScreen from './screens/MainScreen';
+import DetailScreen from './screens/DetailScreen';
 
-const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
 
 function App(): JSX.Element {
   return (
     <NavigationContainer>
-      <Drawer.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-          headerShown: false,
-          drawerPosition: 'left',
-          drawerActiveBackgroundColor: '#fb8c00',
-          drawerActiveTintColor: 'white',
-        }}
-        backBehavior="history"
-        drawerContent={({navigation}) => (
-          <SafeAreaView>
-            <Text>A Custom Drawer</Text>
-            <Button
-              onPress={() => navigation.closeDrawer()}
-              title="Drawer 닫기"
-            />
-          </SafeAreaView>
-        )}>
-        <Drawer.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{title: '홈', headerLeft: () => <Text>Left</Text>}}
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Main"
+          component={MainScreen}
+          options={{headerShown: false}}
         />
-        <Drawer.Screen
-          name="Setting"
-          component={SettingScreen}
-          options={{title: '설정'}}
-        />
-      </Drawer.Navigator>
+        <Stack.Screen name="Detail" component={DetailScreen} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

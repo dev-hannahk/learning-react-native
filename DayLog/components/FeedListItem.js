@@ -1,6 +1,6 @@
 import React from 'react';
 import {Platform, Pressable, StyleSheet, Text} from 'react-native';
-import {format, formateDistanceToNow} from 'date-fns';
+import {format, formatDistanceToNow} from 'date-fns';
 import {ko} from 'date-fns/locale';
 
 function formatDate(date) {
@@ -12,7 +12,7 @@ function formatDate(date) {
     return '방금 전';
   }
   if (diff < 60 * 60 * 24 * 3) {
-    return formateDistanceToNow(d, {addSuffix: true, locale: ko});
+    return formatDistanceToNow(d, {addSuffix: true, locale: ko});
   }
   return format(d, 'PPP EEE p', {locale: ko});
 }

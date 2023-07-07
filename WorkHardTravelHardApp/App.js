@@ -22,7 +22,7 @@ export default function App() {
   const [toDos, setToDos] = useState({});
 
   useEffect(() => {
-    loadToDos();
+    Object.keys(toDos).length !== 0 && loadToDos();
     loadTab();
   }, []);
 

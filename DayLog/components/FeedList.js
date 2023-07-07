@@ -2,7 +2,23 @@ import React from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import FeedListItem from './FeedListItem';
 
-function FeedList({logs}) {
+function FeedList({logs, onScrolledToBottom}) {
+  const onScroll = e => {
+    const {contentSize, layoutMeasurement, contentOffset} = e.nativeEvent;
+    // console.log({contentSize, layoutMeasurement, contentOffset});
+
+    const distanceFromBottom =
+      contentSize.height - layoutMeasurement.height - contentOffset.y;
+
+    if (distanceFromBottom < 72) {
+      // console.log('바닥과 가까워요.');
+      onScrolledToBottom(true);
+    } else {
+      // console.log('바닥과 멀어졌어요.');
+      onScrolledToBottom(false);
+    }
+  };
+
   return (
     <FlatList
       data={logs}
@@ -10,6 +26,7 @@ function FeedList({logs}) {
       renderItem={({item}) => <FeedListItem log={item} />}
       keyExtractor={log => log.id}
       ItemSeparatorComponent={() => <View style={styles.seperator} />}
+      onScroll={onScroll}
     />
   );
 }

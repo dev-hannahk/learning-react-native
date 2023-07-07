@@ -7,16 +7,8 @@
 
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
 import RootStack from './screens/RootStack';
-import LogContext, {LogContextProvider} from './contexts/LogContext';
+import {LogContextProvider} from './contexts/LogContext';
 import {SearchContextProvider} from './contexts/SearchContext';
 
 function App(): JSX.Element {

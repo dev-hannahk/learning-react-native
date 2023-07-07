@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useRef} from 'react';
-import {Platform, Pressable, StyleSheet, View, Animated} from 'react-native';
+import {Platform, Pressable, StyleSheet, Animated} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function FloatingWriteButton({hidden}) {

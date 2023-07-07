@@ -3,7 +3,6 @@ import {
   Pressable,
   TextInput,
   StyleSheet,
-  Text,
   useWindowDimensions,
   View,
 } from 'react-native';

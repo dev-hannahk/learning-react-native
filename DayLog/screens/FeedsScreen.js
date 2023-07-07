@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {StyleSheet, View, TextInput} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import FeedList from '../components/FeedList';
 import FloatingWriteButton from './FloatingWriteButton';
 import LogContext from '../contexts/LogContext';

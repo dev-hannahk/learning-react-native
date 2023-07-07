@@ -16,11 +16,17 @@ import {
   View,
 } from 'react-native';
 import RootStack from './screens/RootStack';
+import LogContext, {LogContextProvider} from './contexts/LogContext';
 
 function App(): JSX.Element {
   return (
     <NavigationContainer>
-      <RootStack />
+      {/* <LogContext.Provider value="안녕하세요">
+        <RootStack />
+      </LogContext.Provider> */}
+      <LogContextProvider>
+        <RootStack />
+      </LogContextProvider>
     </NavigationContainer>
   );
 }

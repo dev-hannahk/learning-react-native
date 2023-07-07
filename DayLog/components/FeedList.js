@@ -4,6 +4,13 @@ import FeedListItem from './FeedListItem';
 
 function FeedList({logs, onScrolledToBottom}) {
   const onScroll = e => {
+    /**
+     * onScrolledToBottom props가 설정되지 않았을 때 예외처리
+     */
+    if (!onScrolledToBottom) {
+      return;
+    }
+
     const {contentSize, layoutMeasurement, contentOffset} = e.nativeEvent;
     // console.log({contentSize, layoutMeasurement, contentOffset});
 

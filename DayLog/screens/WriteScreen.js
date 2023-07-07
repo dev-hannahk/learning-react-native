@@ -6,9 +6,11 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import WriteEditor from '../components/WriteEditor';
 import LogContext from '../contexts/LogContext';
 
-function WriteScreen() {
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
+function WriteScreen({route}) {
+  const log = route.params?.log;
+
+  const [title, setTitle] = useState(log ? log.title : '');
+  const [body, setBody] = useState(log ? log.body : '');
   const navigation = useNavigation();
 
   const {onCreate} = useContext(LogContext);

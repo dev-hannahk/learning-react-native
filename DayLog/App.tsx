@@ -21,9 +21,6 @@ import LogContext, {LogContextProvider} from './contexts/LogContext';
 function App(): JSX.Element {
   return (
     <NavigationContainer>
-      {/* <LogContext.Provider value="안녕하세요">
-        <RootStack />
-      </LogContext.Provider> */}
       <LogContextProvider>
         <RootStack />
       </LogContextProvider>

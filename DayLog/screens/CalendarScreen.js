@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useMemo} from 'react';
 import CalendarView from '../components/CalendarView';
 import LogContext from '../contexts/LogContext';
 import {format} from 'date-fns';
@@ -10,11 +10,13 @@ function CalendarScreen() {
     format(new Date(), 'yyyy-mm-dd'),
   );
 
-  const markedDates = logs.reduce((acc, current) => {
-    const formattedDate = format(new Date(current.date), 'yyyy-mm-dd');
-    acc[formattedDate] = {marked: true};
-    return acc;
-  });
+  const markedDates = useMemo(() => {
+    return logs.reduce((acc, current) => {
+      const formattedDate = format(new Date(current.date), 'yyyy-mm-dd');
+      acc[formattedDate] = {marked: true};
+      return acc;
+    });
+  }, [logs]);
 
   const filteredLogs = logs.filter(
     log => format(new Date(log.date), 'yyyy-MM-dd') === selectedDate,

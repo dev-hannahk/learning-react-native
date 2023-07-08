@@ -4,20 +4,20 @@ import FeedListItem from './FeedListItem';
 
 function FeedList({logs, onScrolledToBottom, ListHeaderComponent}) {
   const onScroll = e => {
-    /**
-     * onScrolledToBottom props가 설정되지 않았을 때 예외처리
-     */
+    //  onScrolledToBottom props가 설정되지 않았을 때 예외처리
     if (!onScrolledToBottom) {
       return;
     }
 
     const {contentSize, layoutMeasurement, contentOffset} = e.nativeEvent;
-    // console.log({contentSize, layoutMeasurement, contentOffset});
 
     const distanceFromBottom =
       contentSize.height - layoutMeasurement.height - contentOffset.y;
 
-    if (distanceFromBottom < 72) {
+    if (
+      contentSize.height > layoutMeasurement.height &&
+      distanceFromBottom < 72
+    ) {
       // console.log('바닥과 가까워요.');
       onScrolledToBottom(true);
     } else {
@@ -32,7 +32,7 @@ function FeedList({logs, onScrolledToBottom, ListHeaderComponent}) {
       style={styles.block}
       renderItem={({item}) => <FeedListItem log={item} />}
       keyExtractor={log => log.id}
-      ItemSeparatorComponent={() => <View style={styles.seperator} />}
+      ItemSeparatorComponent={() => <View style={styles.separator} />}
       onScroll={onScroll}
       ListHeaderComponent={ListHeaderComponent}
     />
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   block: {
     flex: 1,
   },
-  seperator: {
+  separator: {
     backgroundColor: '#e0e0e0',
     height: 1,
     width: '100%',

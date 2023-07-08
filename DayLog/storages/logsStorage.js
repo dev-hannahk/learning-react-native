@@ -9,7 +9,6 @@ const logsStorage = {
       const parsed = JSON.parse(raw);
       return parsed;
     } catch (e) {
-      console.log('Failed to load logs');
       throw new Error('Failed to load logs');
     }
   },
@@ -18,7 +17,6 @@ const logsStorage = {
     try {
       await AsyncStorage.setItem(key, JSON.stringify(data));
     } catch (e) {
-      console.log('Failed to save logs');
       throw new Error('Failed to save logs');
     }
   },

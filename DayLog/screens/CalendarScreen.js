@@ -12,10 +12,10 @@ function CalendarScreen() {
 
   const markedDates = useMemo(() => {
     return logs.reduce((acc, current) => {
-      const formattedDate = format(new Date(current.date), 'yyyy-mm-dd');
+      const formattedDate = format(new Date(current.date), 'yyyy-MM-dd');
       acc[formattedDate] = {marked: true};
       return acc;
-    });
+    }, {});
   }, [logs]);
 
   const filteredLogs = logs.filter(

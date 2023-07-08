@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "497440489822",
+    "project_id": "public-gallery-hannah",
+    "storage_bucket": "public-gallery-hannah.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:497440489822:android:6f6db46a4f3aa1fdee4fcf",
+        "android_client_info": {
+          "package_name": "com.publicgalleryhannah"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "497440489822-57rvkjq8734j3g76pud3gbsulml1u279.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.publicgalleryhannah",
+            "certificate_hash": "93d137b4f3cff6c55603be5f7f7b0bac3e294118"
+          }
+        },
+        {
+          "client_id": "497440489822-4578v9r8adik752hmachb2u9rkij5tjo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0_DwRO9SE_ROP0FfbUMngzfea8huSFVk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "497440489822-4578v9r8adik752hmachb2u9rkij5tjo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

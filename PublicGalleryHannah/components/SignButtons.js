@@ -1,9 +1,9 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import CustomButton from './CustomButton';
 import {useNavigation} from '@react-navigation/native';
 
-function SignButtons({isSignUp, onSubmit}) {
+function SignButtons({isSignUp, onSubmit, loading}) {
   const navigation = useNavigation();
 
   const primaryTitle = isSignUp ? '회원가입' : '로그인';
@@ -16,32 +16,33 @@ function SignButtons({isSignUp, onSubmit}) {
       navigation.push('SignIn', {isSignUp: true});
     }
   };
+
+  if (loading) {
+    return (
+      <View style={styles.spinnerWrapper}>
+        <ActivityIndicator size={32} color="#6200ee" />
+      </View>
+    );
+  }
   return (
     <View style={styles.buttons}>
-      {isSignUp ? (
-        <>
-          <CustomButton title="회원가입" hasMarginBottom onPress={onSubmit} />
-          <CustomButton
-            title="로그인"
-            theme="secondary"
-            onPress={() => navigation.goBack()}
-          />
-        </>
-      ) : (
-        <>
-          <CustomButton title="로그인" hasMarginBottom onPress={onSubmit} />
-          <CustomButton
-            title="회원가입"
-            theme="secondary"
-            onPress={() => navigation.push('SignIn', {isSignUp: true})}
-          />
-        </>
-      )}
+      <CustomButton title={primaryTitle} hasMarginBottom onPress={onSubmit} />
+      <CustomButton
+        title={secondaryTitle}
+        theme="secondary"
+        onPress={onSecondaryButtonsPress}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  spinnerWrapper: {
+    marginTop: 64,
+    height: 104,
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
   buttons: {
     marginTop: 64,
   },

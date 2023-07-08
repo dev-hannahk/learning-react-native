@@ -5,10 +5,12 @@ import {signOut} from '../lib/auth';
 import {createUsers} from '../lib/users';
 import BorderedInput from './BorderedInput';
 import CustomButton from './CustomButton';
+import {useUserContext} from '../contexts/UserContext';
 
 function SetupProfile() {
   const [displayName, setDisplayName] = useState('');
   const navigation = useNavigation();
+  const {setUser} = useUserContext();
 
   const {params} = useRoute();
   const {uid} = params || {};
@@ -19,6 +21,8 @@ function SetupProfile() {
       displayName,
       photoURL: null,
     });
+    createUsers(user);
+    setUser(user);
   };
 
   const onCancel = () => {

@@ -61,7 +61,7 @@ function SignInScreen({navigation, route}) {
         'auth/invalid-email': '유효하지 않은 이메일 주소입니다.',
       };
 
-      const msg = messages[e.code] || `${isSignUp ? '가입' : '로르인'} 실패`;
+      const msg = messages[e.code] || `${isSignUp ? '가입' : '로그인'} 실패`;
       Alert.alert('실패', msg);
 
       console.log(e);
